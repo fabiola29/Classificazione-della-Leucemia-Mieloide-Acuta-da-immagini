@@ -23,7 +23,6 @@ La repository è organizzata in moduli dedicati alle diverse fasi di sperimentaz
 │   ├── transformer.py                  # Architettura Dual-Stream ViT adattata per 5 Folds
 │   ├── process_dataset.py              # Pipeline di segmentazione cellulare LAB
 │   ├── prepare_data.py                 # Split Stratified Group K-Fold ($K=5$) con Holdout
-│   ├── distribuzione_dataset_*.py      # Script per l'analisi statistica delle classi
 │   ├── cleanup.py                      # Pulizia e verifica integrità campioni (MD5)
 │   ├── train.py                        # Pipeline di addestramento $K=5$ con pesatura e checkpointing
 │   ├── calcola_roc_auc.py              # Calcolo metriche ROC-AUC e PR-AUC per 5 Folds
