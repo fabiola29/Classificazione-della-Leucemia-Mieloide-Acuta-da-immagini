@@ -11,8 +11,6 @@ La repository è organizzata in moduli dedicati alle diverse fasi di sperimentaz
 
 ```text
 ├── codice1/                            # Sperimentazione Primaria (Configurazione $K=3$ Fold)
-│   ├── dataset/                        # Dataset di base grezzo o processato (Originale / Segmentato)
-│   ├── dataset_split_con_test/         # Dataset suddiviso in K-Fold con Test Set isolato (Holdout)
 │   ├── transformer.py                  # Architettura principale Dual-Stream Vision Transformer
 │   ├── process_dataset.py              # Segmentazione cellulare e sogliatura automatica nello spazio colore LAB
 │   ├── prepare_data.py                 # Split Stratified Group K-Fold basato sull'ID del paziente
@@ -22,8 +20,6 @@ La repository è organizzata in moduli dedicati alle diverse fasi di sperimentaz
 │   ├── calcola_roc_auc.py              # Valutazione delle metriche ROC-AUC (Spec+Sens) e PR-AUC
 │   └── test.py                         # Script di inferenza e diagnosi a livello di paziente (con Ensemble)
 ├── codice2/                            # Sperimentazione Secondaria (Configurazione $K=5$ Fold)
-│   ├── dataset/                        # Dataset di base grezzo o processato (Originale / Segmentato)
-│   ├── dataset_split_con_test/         # Dataset suddiviso in K-Fold con Test Set isolato (Holdout)
 │   ├── transformer.py                  # Architettura Dual-Stream ViT adattata per 5 Folds
 │   ├── process_dataset.py              # Pipeline di segmentazione cellulare LAB
 │   ├── prepare_data.py                 # Split Stratified Group K-Fold ($K=5$) con Holdout
@@ -71,17 +67,25 @@ pip install torch torchvision torchaudio --index-url https://download.pytorch.or
 pip install opencv-python pillow numpy matplotlib scikit-learn prettytable seaborn tqdm pandas
 ```
 
-### 1. Preparazione dei Dati e Segmentazione
-Inserisci le cartelle dei dati grezzi dei pazienti all'interno della cartella `./data`, quindi esegui la pipeline di segmentazione e suddivisione:
+### 1. Download del Dataset e Preprocessamento
+
+Prima di eseguire gli script di elaborazione, è necessario scaricare il dataset biologico ufficiale:
+
+1. Scarica il dataset pubblico AML-Cytomorphology_MLL_Helmholtz dal portale The Cancer Imaging Archive (TCIA):  https://www.cancerimagingarchive.net/collection/aml-cytomorphology_mll_helmholtz/
+2. Estrarre le immagini grezze e posizionarle nella cartella ./data all'interno della directory di lavoro (codice1/data/ e codice2/data/).
+3. Eseguire la pipeline di segmentazione e suddivisione dei dati:
+
+Prima di eseguire gli script di elaborazione, è necessario scaricare il dataset biologico ufficiale e rinominare la cartella con `./data` e control con CONTROL poi eseguire:
+
 
 ```bash
-# Genera le maschere cellulari ad alto contrasto
+# Genera le maschere cellulari ad alto contrasto nello spazio colore LAB
 python process_dataset.py
 
 # Rimuovi eventuali duplicati fisici tramite hash MD5
 python cleanup.py
 
-# Crea gli split Stratified K-Fold con un Test Set isolato al 20%
+# Crea gli split Stratified Group K-Fold con un Test Set isolato al 20%
 python prepare_data.py
 ```
 
